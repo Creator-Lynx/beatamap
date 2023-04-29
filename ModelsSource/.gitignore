@@ -10,6 +10,11 @@
 /[Ll]ogs/
 /[Uu]ser[Ss]ettings/
 
+*.blend1
+*.png
+*.jpg
+*.jpeg
+
 
 # testing data
 /ProfilerData/
