@@ -16,10 +16,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Vector2 LookSpeed = new Vector2(2f, 2f);
     [SerializeField] private float _viewingSens = 10;
     private float x = 0;
-    private float y = 0;    
+    private float y = 0;
 
+    [Header("Attack")]
+    [SerializeField] private MeleeWeaponController _meleeWeapon;
+ 
     private void Start()
     {
+        Cursor.lockState = CursorLockMode.Locked;
         _controller = GetComponent<CharacterController>();
     }
 
@@ -33,10 +37,15 @@ public class PlayerController : MonoBehaviour
     private void PlayerMovement()
     {
         var moveDir = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-        moveDir.Normalize();        
+        moveDir.Normalize();
 
-        Vector3 velocity = (transform.forward * moveDir.y + transform.right * moveDir.x) * _moveSpeed;
-        velocity.y = 0;
+        if (_controller.isGrounded)
+        {
+            _velocityY = 0f;
+        }
+        _velocityY += _gravity * Time.deltaTime;
+
+        Vector3 velocity = (transform.forward * moveDir.y + transform.right * moveDir.x) * _moveSpeed + _velocityY * Vector3.up;        
         _controller.Move(velocity * Time.deltaTime);
     }
 
@@ -56,6 +65,9 @@ public class PlayerController : MonoBehaviour
 
     private void PlayerAttack()
     {
-        
+        if(Input.GetButtonDown("Fire1"))
+        {
+            _meleeWeapon.Attack();
+        }
     }
 }
