@@ -33,9 +33,9 @@ public class PlayerController : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
         _controller = GetComponent<CharacterController>();
-        //SetWeapon(WeaponType.Fists);
+        SetWeapon(WeaponType.Fists);
         //SetWeapon(WeaponType.Katana);
-        SetWeapon(WeaponType.Cudgel);
+        //SetWeapon(WeaponType.Cudgel);
     }
 
     private void Update()

@@ -11,7 +11,7 @@ public abstract class WeaponController : MonoBehaviour
 
     [SerializeField] private GameObject _objToActive;
     [SerializeField] private Animator _animator;
-    [SerializeField] private MeleeDamageTrigger _damageTrigger;
+    [SerializeField] private MeleeDamageTrigger[] _damageTriggers;
 
     private bool _isActive = false;
     private int _curCombo = 0;
@@ -71,11 +71,23 @@ public abstract class WeaponController : MonoBehaviour
 
     public void ActivateTrigger()
     {
-        if (_damageTrigger) { _damageTrigger.Activate(); }
+        if (_damageTriggers.Length > 0) 
+        {
+            foreach (var trigger in _damageTriggers)
+            {
+                trigger.Activate();
+            }
+        }
     }
 
     public void DeactivateTrigger()
     {
-        if (_damageTrigger) { _damageTrigger.Deactivate(); }
+        if (_damageTriggers.Length > 0)
+        {
+            foreach (var trigger in _damageTriggers)
+            {
+                trigger.Deactivate();
+            }
+        }
     }
 }
