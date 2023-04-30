@@ -3,18 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
 
-public class KatanaController : MonoBehaviour, IWeaponController
+public class KatanaController : WeaponController
 {
     [SerializeField] private LayerMask _ignoreLayers;
-    [SerializeField] private CharacterController _player;
-    [SerializeField] private Animator _anim;
-    [SerializeField] private MeleeDamageTrigger _damageTrigger;
+    [SerializeField] private CharacterController _player;    
     private IDamagable _target = null;
 
     [Header("UI")]
     [SerializeField] private GameObject _targetMarker;
 
-    private void Update()
+    protected override void OnUpdate()
     {
         var ray = Camera.main.ScreenPointToRay(new Vector2(Screen.width / 2, Screen.height / 2));
         if (Physics.Raycast(ray, out var hit, 1000f, ~_ignoreLayers))
@@ -37,7 +35,7 @@ public class KatanaController : MonoBehaviour, IWeaponController
         _targetMarker.SetActive(_target != null);
     }
 
-    public void Attack()
+    public override void Attack()
     {                
         if (_target != null)
         {
@@ -51,16 +49,6 @@ public class KatanaController : MonoBehaviour, IWeaponController
             }
         }
 
-        _anim.SetTrigger("Attack");
-    }
-
-    private void ActivateTrigger()
-    {
-        _damageTrigger.Activate();
-    }
-
-    private void DeactivateTrigger()
-    {
-        _damageTrigger.Deactivate();
+        SetAttackTrigger();
     }
 }

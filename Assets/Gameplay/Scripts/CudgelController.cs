@@ -2,23 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CudgelController : MonoBehaviour, IWeaponController
+public class CudgelController : WeaponController
 {
-    [SerializeField] protected Animator _anim;
-    [SerializeField] private MeleeDamageTrigger _damageTrigger;
-
-    public void Attack()
+    public override void Attack()
     {
-        _anim.SetTrigger("Attack");
-    }
-
-    private void ActivateTrigger()
-    {
-        _damageTrigger.Activate();
-    }
-
-    private void DeactivateTrigger()
-    {
-        _damageTrigger.Deactivate();
+        SetAttackTrigger();
     }
 }

@@ -20,24 +20,19 @@ public class PlayerController : MonoBehaviour
     private float y = 0;
 
     [Header("Attack")]
-    [InterfaceField(typeof(IWeaponController))] 
-    [SerializeField] private Object _cudgelObject;
-    private IWeaponController _cudgel => _cudgelObject as IWeaponController;
-
-    [InterfaceField(typeof(IWeaponController))]
-    [SerializeField] private Object _katanaObject;
-    private IWeaponController _katana => _katanaObject as IWeaponController;
+    [SerializeField] private WeaponController _cudgel;    
+    [SerializeField] private WeaponController _katana;
 
     private bool _isShooting = false;
     [SerializeField] private GunController _gunController;
 
-    private IWeaponController _currentWeapon;
+    private WeaponController _currentWeapon;
  
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
         _controller = GetComponent<CharacterController>();
-        SetWeapon(WeaponType.Katana);
+        SetWeapon(WeaponType.Cudgel);
     }
 
     private void Update()
@@ -60,6 +55,8 @@ public class PlayerController : MonoBehaviour
 
         Vector3 velocity = (transform.forward * moveDir.y + transform.right * moveDir.x) * _moveSpeed + _velocityY * Vector3.up;        
         _controller.Move(velocity * Time.deltaTime);
+
+        _currentWeapon.IsWalking = moveDir.magnitude > 0;
     }
 
     private void PlayerLook()
@@ -72,7 +69,7 @@ public class PlayerController : MonoBehaviour
         y += mouseX * LookSpeed.y * _viewingSens;
 
         PlayerCamera.localRotation = Quaternion.Euler(x, 0, 0);
-        PlayerCamera.localPosition = new Vector3(0, 1.8f, 0);
+        //PlayerCamera.localPosition = new Vector3(0, 1.8f, 0);
         transform.rotation = Quaternion.Euler(0, y, 0);
     }
 
@@ -80,7 +77,7 @@ public class PlayerController : MonoBehaviour
     {
         if (_currentWeapon != null)
         {
-            _currentWeapon.gameObject.SetActive(false);
+            _currentWeapon.DeactivateWeapon();
         }
 
         switch(weaponType)
@@ -94,7 +91,7 @@ public class PlayerController : MonoBehaviour
                 break;
         }
 
-        _currentWeapon.gameObject.SetActive(true);
+        _currentWeapon.ActivateWeapon();
     }
 
     private void PlayerAttack()
@@ -103,21 +100,23 @@ public class PlayerController : MonoBehaviour
         {
             _currentWeapon.Attack();
         }
+        
+        _currentWeapon.IsStrongAttack = Input.GetMouseButton(1);        
 
-        if(Input.GetKeyDown(KeyCode.V))
-        {
-            _isShooting = true;
-            _currentWeapon.gameObject.SetActive(false);
-            _gunController.gameObject.SetActive(true);
-            _gunController.StartShooting();
-        }
+        //if(Input.GetKeyDown(KeyCode.V))
+        //{
+        //    _isShooting = true;
+        //    _currentWeapon.gameObject.SetActive(false);
+        //    _gunController.gameObject.SetActive(true);
+        //    _gunController.StartShooting();
+        //}
 
-        if(_isShooting && _gunController.isFinished)
-        {
-            _isShooting = false;
-            _gunController.gameObject.SetActive(false);
-            _currentWeapon.gameObject.SetActive(true);
-        }
+        //if(_isShooting && _gunController.isFinished)
+        //{
+        //    _isShooting = false;
+        //    _gunController.gameObject.SetActive(false);
+        //    _currentWeapon.gameObject.SetActive(true);
+        //}
     }
 
     public void AddToInventory(string packageID)
