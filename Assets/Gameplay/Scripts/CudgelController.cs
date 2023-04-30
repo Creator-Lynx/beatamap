@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MeleeWeaponController : MonoBehaviour
-{    
+public class CudgelController : MonoBehaviour, IWeaponController
+{  
     [SerializeField] private Animator _anim;
     [SerializeField] private MeleeDamageTrigger _damageTrigger;
 

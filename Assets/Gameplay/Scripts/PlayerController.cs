@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,12 +18,24 @@ public class PlayerController : MonoBehaviour
     private float y = 0;
 
     [Header("Attack")]
-    [SerializeField] private MeleeWeaponController _meleeWeapon;
+    [InterfaceField(typeof(IWeaponController))] 
+    [SerializeField] private Object _cudgelObject;
+    private IWeaponController _cudgel => _cudgelObject as IWeaponController;
+
+    [InterfaceField(typeof(IWeaponController))]
+    [SerializeField] private Object _katanaObject;
+    private IWeaponController _katana => _katanaObject as IWeaponController;
+
+    private bool _isShooting = false;
+    [SerializeField] private GunController _gunController;
+
+    private IWeaponController _currentWeapon;
  
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
         _controller = GetComponent<CharacterController>();
+        SetWeapon(WeaponType.Cudgel);
     }
 
     private void Update()
@@ -63,11 +74,47 @@ public class PlayerController : MonoBehaviour
         transform.rotation = Quaternion.Euler(0, y, 0);
     }
 
+    public void SetWeapon(WeaponType weaponType)
+    {
+        if (_currentWeapon != null)
+        {
+            _currentWeapon.gameObject.SetActive(false);
+        }
+
+        switch(weaponType)
+        {
+            case WeaponType.Cudgel:
+                _currentWeapon = _cudgel; 
+                break;
+
+            case WeaponType.Katana:
+                _currentWeapon = _katana;
+                break;
+        }
+
+        _currentWeapon.gameObject.SetActive(true);
+    }
+
     private void PlayerAttack()
     {
-        if(Input.GetButtonDown("Fire1"))
+        if(Input.GetButtonDown("Fire1") && !_isShooting)
         {
-            _meleeWeapon.Attack();
+            _currentWeapon.Attack();
+        }
+
+        if(Input.GetKeyDown(KeyCode.V))
+        {
+            _isShooting = true;
+            _currentWeapon.gameObject.SetActive(false);
+            _gunController.gameObject.SetActive(true);
+            _gunController.StartShooting();
+        }
+
+        if(_isShooting && _gunController.isFinished)
+        {
+            _isShooting = false;
+            _gunController.gameObject.SetActive(false);
+            _currentWeapon.gameObject.SetActive(true);
         }
     }
 }
