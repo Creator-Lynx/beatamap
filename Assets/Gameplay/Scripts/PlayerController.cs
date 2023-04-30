@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    private List<string> _inventory = new List<string>();
+
     [Header("Movement")]
     [SerializeField] private float _moveSpeed = 8f;
     [SerializeField] private float _gravity = -13.0f;
@@ -116,5 +118,15 @@ public class PlayerController : MonoBehaviour
             _gunController.gameObject.SetActive(false);
             _currentWeapon.gameObject.SetActive(true);
         }
+    }
+
+    public void AddToInventory(string packageID)
+    {
+        _inventory.Add(packageID);
+    }
+
+    public bool IsInventoryContains(string packageID)
+    {
+        return _inventory.Contains(packageID);
     }
 }
