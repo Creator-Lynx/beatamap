@@ -7,50 +7,75 @@ public abstract class WeaponController : MonoBehaviour
     [SerializeField] private string _weaponName;
     [SerializeField] private int _attacksCount = 2;
 
-    [HideInInspector] public bool IsWalking = false;
-    [HideInInspector] public bool IsStrongAttack = false;
+    [HideInInspector] public bool IsWalking = false;    
 
     [SerializeField] private GameObject _objToActive;
     [SerializeField] private Animator _animator;
     [SerializeField] private MeleeDamageTrigger _damageTrigger;
 
+    private bool _isActive = false;
+    private int _curCombo = 0;
+
     public void ActivateWeapon()
     {
-        _objToActive?.SetActive(true);
+        _isActive = true;
+        if ( _objToActive) { _objToActive.SetActive(true); }
         var triggerName = $"{_weaponName}_Get";
         _animator.SetTrigger(triggerName);
     }
 
     public void DeactivateWeapon()
     {
-        _objToActive?.SetActive(false);
+        _isActive = false;
+        if (_objToActive) { _objToActive.SetActive(false); }
     }
 
     public abstract void Attack();
 
     protected void SetAttackTrigger()
+    {        
+        var triggerName = $"{_weaponName}_Attack{_curCombo}";
+        _animator.SetTrigger(triggerName);
+        _curCombo = Repeat(++_curCombo, 0, _attacksCount - 1);
+    }
+
+    private int Repeat(int val, int min, int max)
     {
-        var attackNum = Random.Range(0, _attacksCount);
-        var triggerName = $"{_weaponName}_Attack{attackNum}";
+        if (val > max) return min;
+        else if (val < min) return max;
+        else return val;
+    }
+
+    public void StrongAttackPrepare()
+    {
+        var triggerName = $"{_weaponName}_AttackStrong_Prepare";
+        _animator.SetTrigger(triggerName);
+    }
+
+    public void StrongAttackRelease()
+    {
+        var triggerName = $"{_weaponName}_AttackStrong_Release";
         _animator.SetTrigger(triggerName);
     }
 
     private void Update()
     {
-        _animator.SetBool("Walk", IsWalking);
-        _animator.SetBool($"{_weaponName}_AttackStrong", IsStrongAttack);
-        OnUpdate();
+        if (_isActive)
+        {
+            _animator.SetBool("Walk", IsWalking);            
+            OnUpdate();
+        }
     }
 
     protected virtual void OnUpdate() { }
 
-    private void ActivateTrigger()
+    public void ActivateTrigger()
     {
-        _damageTrigger.Activate();
+        if (_damageTrigger) { _damageTrigger.Activate(); }
     }
 
-    private void DeactivateTrigger()
+    public void DeactivateTrigger()
     {
-        _damageTrigger.Deactivate();
+        if (_damageTrigger) { _damageTrigger.Deactivate(); }
     }
 }
