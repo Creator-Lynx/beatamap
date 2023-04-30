@@ -4,6 +4,7 @@ using UnityEngine;
 
 public enum WeaponType
 {
-    Cudgel = 0,
+    Fists = 0,
+    Cudgel,
     Katana
 }
