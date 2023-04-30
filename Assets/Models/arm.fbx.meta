@@ -4,21 +4,6 @@ ModelImporter:
   serializedVersion: 22103
   internalIDToNameTable:
   - first:
-      74: -3584619823844665163
-    second: metarig|Action
-  - first:
-      74: -7079218833480922270
-    second: metarig|Action.001
-  - first:
-      74: 34405010862065226
-    second: metarig|Action.002
-  - first:
-      74: -2843400775352301202
-    second: metarig|Action.003
-  - first:
-      74: -5172837758766176211
-    second: metarig|Action.004
-  - first:
       74: 7586381826956552429
     second: metarig|catana_APPERANCE
   - first:
@@ -67,58 +52,15 @@ ModelImporter:
       74: 5721545614551579057
     second: metarig|LeftPUNCH
   - first:
-      74: -887982601649841707
-    second: metarig|metarigAction
-  - first:
-      74: -2463781497245029270
-    second: metarig|metarigAction.001
-  - first:
-      74: -7536546058115350168
-    second: metarig|metarigAction.002
-  - first:
-      74: -4544823380048006326
-    second: metarig|metarigAction.003
-  - first:
-      74: -78736315327977006
-    second: metarig|metarigAction.004
-  - first:
-      74: -2017850038750408303
-    second: metarig|metarigAction.005
-  - first:
-      74: 7669037436414852622
-    second: metarig|metarigAction.006
-  - first:
-      74: -8806504291279386108
-    second: metarig|metarigAction.007
-  - first:
-      74: 8396748402349666717
-    second: metarig|metarigAction.008
-  - first:
-      74: -5003131165045108139
-    second: metarig|PoseLib
-  - first:
       74: -4418663530516989947
     second: metarig|PUNCH_PREPARE
-  - first:
-      74: 2367532709501527392
-    second: metarig|PunchLeft
   - first:
       74: 8121998152713483299
     second: metarig|RightPUNCH
   - first:
       74: 2933577835342229695
     second: metarig|Walk
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: emission.001
-    second: {fileID: 2100000, guid: 5f04af3f64f5d5e45aae68efcd390730, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: main.001
-    second: {fileID: 2100000, guid: cce1adb9902141a40b521236c8863ddf, type: 2}
+  externalObjects: {}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -138,7 +80,7 @@ ModelImporter:
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
-    importConstraints: 1
+    importConstraints: 0
     animationCompression: 1
     animationRotationError: 0.5
     animationPositionError: 0.5
@@ -808,11 +750,11 @@ ModelImporter:
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
-    tangentImportMode: 2
+    tangentImportMode: 3
     normalCalculationMode: 4
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
-    blendShapeNormalImportMode: 0
-    normalSmoothingSource: 1
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
   referencedClips: []
   importAnimation: 1
   humanDescription:
