@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CudgelController : MonoBehaviour, IWeaponController
-{  
-    [SerializeField] private Animator _anim;
+{
+    [SerializeField] protected Animator _anim;
     [SerializeField] private MeleeDamageTrigger _damageTrigger;
 
     public void Attack()

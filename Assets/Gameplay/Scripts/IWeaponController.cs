@@ -4,6 +4,7 @@ using UnityEngine;
 
 public interface IWeaponController
 {
-    GameObject gameObject { get; }
-    void Attack();
+    public GameObject gameObject { get; }
+
+    public abstract void Attack();
 }
