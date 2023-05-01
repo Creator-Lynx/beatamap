@@ -15,4 +15,9 @@ public class DamageTriggerActivation : MonoBehaviour
     {
         playerController.CurrentWeapon.DeactivateTrigger();
     }
+
+    private void MakeDash()
+    {
+        ((KatanaController)playerController.CurrentWeapon).Dash();
+    }
 }

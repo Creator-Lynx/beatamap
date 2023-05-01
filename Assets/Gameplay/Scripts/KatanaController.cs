@@ -8,6 +8,7 @@ public class KatanaController : WeaponController
     [SerializeField] private LayerMask _ignoreLayers;
     [SerializeField] private CharacterController _player;    
     private IDamagable _target = null;
+    private Coroutine _dash = null;
 
     [Header("UI")]
     [SerializeField] private GameObject _targetMarker;
@@ -18,7 +19,7 @@ public class KatanaController : WeaponController
         if (Physics.Raycast(ray, out var hit, 1000f, ~_ignoreLayers))
         {
             var damagable = hit.collider.GetComponent<IDamagable>();
-            if(damagable != null && Vector3.Distance(damagable.transform.position, transform.position) <= 5f)
+            if(damagable != null && Vector3.Distance(damagable.transform.position, transform.position) <= 7f)
             {
                 _target = damagable;
             }
@@ -36,19 +37,40 @@ public class KatanaController : WeaponController
     }
 
     public override void Attack()
-    {                
+    {
+        SetAttackTrigger();              
+    }
+
+    public void Dash()
+    {
+        if(_dash != null)
+        {
+            StopCoroutine(_dash);
+        }
+
+        StartCoroutine(DashMovement());
+    }
+
+    private IEnumerator DashMovement()
+    {  
         if (_target != null)
         {
-            var targetPos = _target.transform.position;
-            var distanceToTarget = Vector3.Distance(targetPos, transform.position);
-            if (distanceToTarget > 2f)
+            var selectedTarget = _target;            
+            while (true)
             {
-                var dirToTarget = targetPos - transform.position;
-                var destinationPoint = dirToTarget - dirToTarget.normalized;
-                _player.Move(destinationPoint);
+                var targetPos = selectedTarget.transform.position;
+                var distanceToTarget = Vector3.Distance(targetPos, _player.transform.position);
+
+                if(distanceToTarget <= 1.5f) { break; }
+
+                var dirToTarget = targetPos - _player.transform.position;
+                dirToTarget.Normalize();
+
+                _player.Move(dirToTarget * 15f * Time.deltaTime);
+                yield return new WaitForEndOfFrame();
             }
         }
 
-        SetAttackTrigger();
+        _dash = null;
     }
 }
