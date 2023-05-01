@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour
     private float y = 0;
 
     [Header("Attack")]
+    [SerializeField] private GameObject _arms;
     [SerializeField] private WeaponController _fists;  
     [SerializeField] private WeaponController _cudgel;
     [SerializeField] private WeaponController _katana;
@@ -27,7 +28,7 @@ public class PlayerController : MonoBehaviour
     private bool _isShooting = false;
     [SerializeField] private GunController _gunController;
 
-    [field: SerializeField] public WeaponController CurrentWeapon { get; private set; }
+    public WeaponController CurrentWeapon { get; private set; }
  
     private void Start()
     {
@@ -71,8 +72,7 @@ public class PlayerController : MonoBehaviour
         x = Mathf.Clamp(x, -90, 90);
         y += mouseX * LookSpeed.y * _viewingSens;
 
-        PlayerCamera.localRotation = Quaternion.Euler(x, 0, 0);
-        //PlayerCamera.localPosition = new Vector3(0, 1.8f, 0);
+        PlayerCamera.localRotation = Quaternion.Euler(x, 0, 0);        
         transform.rotation = Quaternion.Euler(0, y, 0);
     }
 
@@ -103,35 +103,39 @@ public class PlayerController : MonoBehaviour
 
     private void PlayerAttack()
     {
-        if(Input.GetButtonDown("Fire1") && !_isShooting)
+        if (!_isShooting)
         {
-            CurrentWeapon.Attack();
+            if (Input.GetButtonDown("Fire1"))
+            {
+                CurrentWeapon.Attack();
+            }
+
+            if (Input.GetMouseButtonDown(1))
+            {
+                CurrentWeapon.StrongAttackPrepare();
+            }
+
+            if (Input.GetMouseButtonUp(1))
+            {
+                CurrentWeapon.StrongAttackRelease();
+            }
+
+            if (Input.GetKeyDown(KeyCode.V))
+            {
+                _isShooting = true;
+                _arms.SetActive(false);
+                CurrentWeapon.DeactivateWeapon();
+                _gunController.gameObject.SetActive(true);
+                _gunController.StartShooting();
+            }
         }
-        
-        if(Input.GetMouseButtonDown(1))
+        else if (_gunController.isFinished)
         {
-            CurrentWeapon.StrongAttackPrepare();
+            _isShooting = false;
+            _gunController.gameObject.SetActive(false);
+            _arms.SetActive(true);
+            CurrentWeapon.ActivateWeapon();
         }
-
-        if(Input.GetMouseButtonUp(1))
-        {
-            CurrentWeapon.StrongAttackRelease();
-        }
-
-        //if(Input.GetKeyDown(KeyCode.V))
-        //{
-        //    _isShooting = true;
-        //    CurrentWeapon.gameObject.SetActive(false);
-        //    _gunController.gameObject.SetActive(true);
-        //    _gunController.StartShooting();
-        //}
-
-        //if(_isShooting && _gunController.isFinished)
-        //{
-        //    _isShooting = false;
-        //    _gunController.gameObject.SetActive(false);
-        //    CurrentWeapon.gameObject.SetActive(true);
-        //}
     }
 
     public void AddToInventory(string packageID)

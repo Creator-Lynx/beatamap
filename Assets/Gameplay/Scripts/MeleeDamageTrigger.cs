@@ -17,7 +17,7 @@ public class MeleeDamageTrigger : MonoBehaviour
     }
 
     private void OnCollisionEnter(Collision collision)
-    {
+    {        
         if (_isActive)
         {
             var damagable = collision.gameObject.GetComponent<IDamagable>();
