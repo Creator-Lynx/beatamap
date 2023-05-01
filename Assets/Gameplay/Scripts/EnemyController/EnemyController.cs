@@ -5,7 +5,10 @@ using UnityEngine.AI;
 
 public class EnemyController : MonoBehaviour, IDamagable
 {
-    [SerializeField] private EnemyState _currentState = EnemyState.Idle;
+    [SerializeField] private int HP = 3;
+    [SerializeField] private PartsExplosion DestroyPartsPrefab;
+
+    private EnemyState _currentState = EnemyState.Idle;
     [SerializeField] private Animator _animator;
     [SerializeField] private NavMeshAgent _agent;
     private PlayerController _player;
@@ -40,7 +43,17 @@ public class EnemyController : MonoBehaviour, IDamagable
 
     public void SetDamage(int damageRate, Vector3 hitPoint, Vector3 hitDirection)
     {
-        _animator.SetTrigger("Stunned");
+        HP -= damageRate;
+        if (HP <= 0)
+        {            
+            var parts = Instantiate(DestroyPartsPrefab, transform.position, transform.rotation);
+            parts.Explode(hitPoint, hitDirection);
+            Destroy(gameObject);
+        }
+        else
+        {
+            _animator.SetTrigger("Stunned");
+        }
     }
 
     private void SetState(EnemyState state)
