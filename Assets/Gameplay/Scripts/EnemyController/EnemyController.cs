@@ -9,6 +9,9 @@ public class EnemyController : MonoBehaviour, IDamagable
     [SerializeField] private int HP = 3;
     [SerializeField] private PartsExplosion DestroyPartsPrefab;
 
+    [SerializeField] private int _damage = 1;
+    [SerializeField] private LayerMask _ignoreLayers;
+
     private EnemyState _currentState = EnemyState.Idle;
     [SerializeField] private Animator _animator;
     [SerializeField] private NavMeshAgent _agent;
@@ -63,5 +66,17 @@ public class EnemyController : MonoBehaviour, IDamagable
     private void SetState(EnemyState state)
     {
         _currentState = state;
+    }
+
+    private void DamagePlayer()
+    {        
+        var rayOrigin = transform.position + Vector3.up;
+        if(Physics.SphereCast(rayOrigin, 0.5f, transform.forward, out var hit, 1.5f, ~_ignoreLayers))
+        {            
+            if (hit.collider.tag == "Player")
+            {
+                hit.collider.GetComponent<PlayerController>().SetDamage(_damage);
+            }
+        }
     }
 }

@@ -373,6 +373,37 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.0033435929, y: -0.004855867, z: 0.00080737926}
     m_Extent: {x: 0.0014344249, y: 0.0023233541, z: 0.0023315279}
   m_DirtyAABB: 0
+--- !u!1 &740935501945273169
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5053767145610483356}
+  m_Layer: 0
+  m_Name: Sphere
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5053767145610483356
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 740935501945273169}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.386, y: 0.973, z: 1.005}
+  m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5757680480288642693}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &884773104186152922
 GameObject:
   m_ObjectHideFlags: 0
@@ -2557,6 +2588,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 5053767145610483356}
   - {fileID: 7417396111921117430}
   - {fileID: 3669354157022844816}
   - {fileID: 5218817372809168861}
@@ -2580,7 +2612,7 @@ Transform:
   - {fileID: 6215463959000494882}
   - {fileID: 6025190412007066803}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!136 &5219067895257198995
 CapsuleCollider:
@@ -2652,6 +2684,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HP: 3
   DestroyPartsPrefab: {fileID: 7317883665977995554, guid: 4309ebef90074d54c96fcd25a182a8b5, type: 3}
+  _damage: 1
+  _ignoreLayers:
+    serializedVersion: 2
+    m_Bits: 2147483684
   _animator: {fileID: 5219067895257198994}
   _agent: {fileID: 5219067895257198992}
 --- !u!1 &5018859291284895083

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField] private int HP = 15;
     private List<string> _inventory = new List<string>();
 
     [Header("Movement")]
@@ -35,8 +36,8 @@ public class PlayerController : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         _controller = GetComponent<CharacterController>();
         //SetWeapon(WeaponType.Fists);
-        //SetWeapon(WeaponType.Katana);
-        SetWeapon(WeaponType.Cudgel);
+        SetWeapon(WeaponType.Katana);
+        //SetWeapon(WeaponType.Cudgel);
     }
 
     private void Update()
@@ -98,7 +99,7 @@ public class PlayerController : MonoBehaviour
                 break;
         }
 
-        CurrentWeapon.ActivateWeapon();
+        CurrentWeapon.ActivateWeapon(HP);
     }
 
     private void PlayerAttack()
@@ -134,7 +135,7 @@ public class PlayerController : MonoBehaviour
             _isShooting = false;
             _gunController.gameObject.SetActive(false);
             _arms.SetActive(true);
-            CurrentWeapon.ActivateWeapon();
+            CurrentWeapon.ActivateWeapon(HP);
         }
     }
 
@@ -146,5 +147,18 @@ public class PlayerController : MonoBehaviour
     public bool IsInventoryContains(string packageID)
     {
         return _inventory.Contains(packageID);
+    }
+
+    public void SetDamage(int damageRate)
+    {
+        HP -= damageRate;
+        if(HP <= 0)
+        {
+            Debug.Log("Player dead");
+        }
+        else
+        {
+            CurrentWeapon.SetPlayerHP(HP);
+        }
     }
 }
