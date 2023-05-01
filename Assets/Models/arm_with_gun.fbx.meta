@@ -123,9 +123,24 @@ ModelImporter:
   - first:
       74: 2933577835342229695
     second: metarig|Walk
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: main metal
+    second: {fileID: 2100000, guid: a12c2c30f5bc22640be4517dbad98a38, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: sub metal
+    second: {fileID: 2100000, guid: a12c2c30f5bc22640be4517dbad98a38, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ultra_black
+    second: {fileID: 2100000, guid: a12c2c30f5bc22640be4517dbad98a38, type: 2}
   materials:
-    materialImportMode: 2
+    materialImportMode: 0
     materialName: 0
     materialSearch: 1
     materialLocation: 1

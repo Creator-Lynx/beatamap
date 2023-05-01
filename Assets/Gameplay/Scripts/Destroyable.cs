@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour, IDamagable
+public class Destroyable : MonoBehaviour, IDamagable
 {
     public int HP = 5;
     public PartsExplosion DestroyPartsPrefab;

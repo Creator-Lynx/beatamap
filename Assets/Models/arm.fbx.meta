@@ -116,7 +116,7 @@ ModelImporter:
     second: metarig|Walk
   externalObjects: {}
   materials:
-    materialImportMode: 2
+    materialImportMode: 0
     materialName: 0
     materialSearch: 1
     materialLocation: 1
