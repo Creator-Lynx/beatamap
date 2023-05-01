@@ -6,9 +6,9 @@ public class DamageTriggerActivation : MonoBehaviour
 {
     public PlayerController playerController;
 
-    private void ActivateTrigger()
+    private void ActivateTrigger(int isStrong)
     {
-        playerController.CurrentWeapon.ActivateTrigger();
+        playerController.CurrentWeapon.ActivateTrigger(isStrong != 0);
     }
 
     private void DeactivateTrigger()

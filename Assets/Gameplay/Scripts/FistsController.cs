@@ -8,4 +8,6 @@ public class FistsController : WeaponController
     {
         SetAttackTrigger();
     }
+
+    public override void SetPlayerHP(int hp) { }
 }

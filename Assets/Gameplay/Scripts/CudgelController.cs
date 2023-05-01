@@ -8,4 +8,9 @@ public class CudgelController : WeaponController
     {
         SetAttackTrigger();
     }
+
+    public override void SetPlayerHP(int hp)
+    {
+        //TODO: скейл параметров булавы
+    }
 }

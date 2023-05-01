@@ -73,4 +73,9 @@ public class KatanaController : WeaponController
 
         _dash = null;
     }
+
+    public override void SetPlayerHP(int hp)
+    {
+        //TODO: скейл параметров катаны
+    }
 }

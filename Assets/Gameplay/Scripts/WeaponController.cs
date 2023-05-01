@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Xml;
 using UnityEngine;
 
 public abstract class WeaponController : MonoBehaviour
@@ -13,15 +14,19 @@ public abstract class WeaponController : MonoBehaviour
     [SerializeField] private Animator _animator;
     [SerializeField] private MeleeDamageTrigger[] _damageTriggers;
 
+    [SerializeField] protected int _currentDamage = 1;
+    [SerializeField] protected int _currentStrongDamage = 1;
+
     private bool _isActive = false;
     private int _curCombo = 0;
 
-    public void ActivateWeapon()
+    public void ActivateWeapon(int curPlayerHP)
     {
         _isActive = true;
         if ( _objToActive) { _objToActive.SetActive(true); }
         var triggerName = $"{_weaponName}_Get";
         _animator.SetTrigger(triggerName);
+        SetPlayerHP(curPlayerHP);
     }
 
     public void DeactivateWeapon()
@@ -69,13 +74,14 @@ public abstract class WeaponController : MonoBehaviour
 
     protected virtual void OnUpdate() { }
 
-    public void ActivateTrigger()
+    public void ActivateTrigger(bool isStrong)
     {
         if (_damageTriggers.Length > 0) 
         {
             foreach (var trigger in _damageTriggers)
             {
-                trigger.Activate();
+                var dmg = isStrong ? _currentStrongDamage : _currentDamage;
+                trigger.Activate(dmg);
             }
         }
     }
@@ -90,4 +96,7 @@ public abstract class WeaponController : MonoBehaviour
             }
         }
     }
+
+    public abstract void SetPlayerHP(int hp);
+    //TODO: сюда прилетает хп игрока, тут можно проводить вычисления урона и тд    
 }
