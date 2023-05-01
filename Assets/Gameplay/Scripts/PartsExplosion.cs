@@ -11,7 +11,7 @@ public class PartsExplosion : MonoBehaviour
         foreach (var part in _parts) 
         {                       
             //part.AddForceAtPosition(hitDirection, hitPoint, ForceMode.Impulse);
-            part.AddForce(hitDirection * 2f, ForceMode.Impulse);
+            part.AddForce(hitDirection * 7f, ForceMode.Impulse);
         }
     }
 }
