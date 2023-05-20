@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField] private int HP = 15;
     private List<string> _inventory = new List<string>();
 
     [Header("Movement")]
@@ -20,19 +21,23 @@ public class PlayerController : MonoBehaviour
     private float y = 0;
 
     [Header("Attack")]
-    [SerializeField] private WeaponController _cudgel;    
+    [SerializeField] private GameObject _arms;
+    [SerializeField] private WeaponController _fists;  
+    [SerializeField] private WeaponController _cudgel;
     [SerializeField] private WeaponController _katana;
 
     private bool _isShooting = false;
     [SerializeField] private GunController _gunController;
 
-    private WeaponController _currentWeapon;
+    public WeaponController CurrentWeapon { get; private set; }
  
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
         _controller = GetComponent<CharacterController>();
-        SetWeapon(WeaponType.Cudgel);
+        //SetWeapon(WeaponType.Fists);
+        SetWeapon(WeaponType.Katana);
+        //SetWeapon(WeaponType.Cudgel);
     }
 
     private void Update()
@@ -56,7 +61,7 @@ public class PlayerController : MonoBehaviour
         Vector3 velocity = (transform.forward * moveDir.y + transform.right * moveDir.x) * _moveSpeed + _velocityY * Vector3.up;        
         _controller.Move(velocity * Time.deltaTime);
 
-        _currentWeapon.IsWalking = moveDir.magnitude > 0;
+        CurrentWeapon.IsWalking = moveDir.magnitude > 0;        
     }
 
     private void PlayerLook()
@@ -68,55 +73,70 @@ public class PlayerController : MonoBehaviour
         x = Mathf.Clamp(x, -90, 90);
         y += mouseX * LookSpeed.y * _viewingSens;
 
-        PlayerCamera.localRotation = Quaternion.Euler(x, 0, 0);
-        //PlayerCamera.localPosition = new Vector3(0, 1.8f, 0);
+        PlayerCamera.localRotation = Quaternion.Euler(x, 0, 0);        
         transform.rotation = Quaternion.Euler(0, y, 0);
     }
 
     public void SetWeapon(WeaponType weaponType)
     {
-        if (_currentWeapon != null)
+        if (CurrentWeapon != null)
         {
-            _currentWeapon.DeactivateWeapon();
+            CurrentWeapon.DeactivateWeapon();
         }
 
         switch(weaponType)
         {
+            case WeaponType.Fists:
+                CurrentWeapon = _fists;
+                break;
+
             case WeaponType.Cudgel:
-                _currentWeapon = _cudgel; 
+                CurrentWeapon = _cudgel; 
                 break;
 
             case WeaponType.Katana:
-                _currentWeapon = _katana;
+                CurrentWeapon = _katana;
                 break;
         }
 
-        _currentWeapon.ActivateWeapon();
+        CurrentWeapon.ActivateWeapon(HP);
     }
 
     private void PlayerAttack()
     {
-        if(Input.GetButtonDown("Fire1") && !_isShooting)
+        if (!_isShooting)
         {
-            _currentWeapon.Attack();
+            if (Input.GetButtonDown("Fire1"))
+            {
+                CurrentWeapon.Attack();
+            }
+
+            if (Input.GetMouseButtonDown(1))
+            {
+                CurrentWeapon.StrongAttackPrepare();
+            }
+
+            if (Input.GetMouseButtonUp(1))
+            {
+                CurrentWeapon.StrongAttackRelease();
+            }
+
+            if (Input.GetKeyDown(KeyCode.V))
+            {
+                _isShooting = true;
+                _arms.SetActive(false);
+                CurrentWeapon.DeactivateWeapon();
+                _gunController.gameObject.SetActive(true);
+                _gunController.StartShooting();
+            }
         }
-        
-        _currentWeapon.IsStrongAttack = Input.GetMouseButton(1);        
-
-        //if(Input.GetKeyDown(KeyCode.V))
-        //{
-        //    _isShooting = true;
-        //    _currentWeapon.gameObject.SetActive(false);
-        //    _gunController.gameObject.SetActive(true);
-        //    _gunController.StartShooting();
-        //}
-
-        //if(_isShooting && _gunController.isFinished)
-        //{
-        //    _isShooting = false;
-        //    _gunController.gameObject.SetActive(false);
-        //    _currentWeapon.gameObject.SetActive(true);
-        //}
+        else if (_gunController.isFinished)
+        {
+            _isShooting = false;
+            _gunController.gameObject.SetActive(false);
+            _arms.SetActive(true);
+            CurrentWeapon.ActivateWeapon(HP);
+        }
     }
 
     public void AddToInventory(string packageID)
@@ -127,5 +147,18 @@ public class PlayerController : MonoBehaviour
     public bool IsInventoryContains(string packageID)
     {
         return _inventory.Contains(packageID);
+    }
+
+    public void SetDamage(int damageRate)
+    {
+        HP -= damageRate;
+        if(HP <= 0)
+        {
+            Debug.Log("Player dead");
+        }
+        else
+        {
+            CurrentWeapon.SetPlayerHP(HP);
+        }
     }
 }

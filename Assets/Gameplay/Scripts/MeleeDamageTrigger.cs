@@ -5,9 +5,11 @@ using UnityEngine;
 public class MeleeDamageTrigger : MonoBehaviour
 {
     private bool _isActive = false;
+    private int _curDamage = 1;
 
-    public void Activate()
+    public void Activate(int damage)
     {
+        _curDamage = damage;
         _isActive = true;
     }
 
@@ -17,13 +19,13 @@ public class MeleeDamageTrigger : MonoBehaviour
     }
 
     private void OnCollisionEnter(Collision collision)
-    {
+    {        
         if (_isActive)
         {
             var damagable = collision.gameObject.GetComponent<IDamagable>();
             if (damagable != null)
             {
-                damagable.SetDamage(1, collision.contacts[0].point, -collision.contacts[0].normal);
+                damagable.SetDamage(_curDamage, collision.contacts[0].point, -collision.contacts[0].normal);
             }
         }
     }
